@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" ref="cardRef">
 
   <div class="card-content">
     <textarea v-if="isEditEvent" ref="textAreaRef" class="textarea is-success" v-model="textareaContent" maxlength="10" />
@@ -47,6 +47,7 @@
 import { computed, ref, nextTick } from 'vue';
 import { useNoteStore } from '@/stores/notes';
 import { useWatchCharacters } from '@/composables/useWatcherCharacters';
+import { onClickOutside } from "@vueuse/core";
 
 const store = useNoteStore();
 
@@ -85,4 +86,7 @@ const editOut = (save) => {
   }
   isEditEvent.value = false;
 };
+
+const cardRef = ref(null)
+onClickOutside(cardRef, () => isEditEvent.value = false); // click outside de la ref
 </script>
