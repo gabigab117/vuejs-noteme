@@ -35,19 +35,32 @@
      class="card-footer-item"
      >Edit</a>
     <a
-    @click.prevent="store.deleteNote(props.note.id)"
+    @click.prevent="modals.deleteNote = true"
      href="#" 
      class="card-footer-item"
      >Delete</a>
   </footer>
+
+  <ModalDeleteNote 
+  v-if="modals.deleteNote"
+  v-model="modals.deleteNote"
+  :noteId="props.note.id"
+   /><!-- On créé un v-model avec ce que l'on veut passer à false ou true, 
+   il va être envoyer sur ModalDeleteNote, on le récupère en props
+   v-model permet de renvoyer des informations, et peut changer  
+   Pour noteID, on récupère notre const props qui est une note et on l'envoie ModalDeleteNote
+   
+   -->
+  
 </div>
 </template>
 
 <script setup>
-import { computed, ref, nextTick } from 'vue';
+import { computed, ref, nextTick, reactive } from 'vue';
 import { useNoteStore } from '@/stores/notes';
 import { useWatchCharacters } from '@/composables/useWatcherCharacters';
 import { onClickOutside } from "@vueuse/core";
+import ModalDeleteNote from '@/components/Notes/ModalDeleteNote.vue';
 
 const store = useNoteStore();
 
@@ -55,7 +68,7 @@ const props = defineProps({
   note: {
     type: Object,
     required: true,
-  }
+  },
 });
 
 const charactersCount = computed(() => {
@@ -89,4 +102,11 @@ const editOut = (save) => {
 
 const cardRef = ref(null)
 onClickOutside(cardRef, () => isEditEvent.value = false); // click outside de la ref
+
+// Pour gérer le Modal quand on clique sur delete
+// Un objetp our réunir tous les modal que l'on peut avoir
+const modals = reactive({
+  deleteNote: false
+});
+
 </script>

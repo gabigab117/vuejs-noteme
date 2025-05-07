@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <Note v-for="note in store.notes.slice().reverse()" :key="note.id" :note /><!--note de v-for-->
+    <Note v-for="note in store.notes.slice().reverse()" :key="note.id" :note=note /><!--note de v-for-->
 
   </div>
 
